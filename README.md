@@ -1,6 +1,3 @@
-<<<<<<< Updated upstream
-# Learnify-backend
-=======
 # Learnify-Backend Server
 
 A backend Server for the Learnify project. REST API implementation with NodeJs, Express and MongoDb
@@ -9,7 +6,7 @@ Used Multer to upload files.
 
 The api uri preceed all API endpoints and the following endpoints are currently available :
 
-* **GET** /users/    (Get all users)
+* **GET** /users/ (Get all users)
 -----------------------------
 * **POST**  /users/register
 * **GET**  /users/login
@@ -18,5 +15,5 @@ The api uri preceed all API endpoints and the following endpoints are currently 
 * **PUT** /users/pic/:id (Change Profile Picture)
 * **PUT** /users/:id (update profile)
 * **DELETE** /users/:id (delete user)
+-----------------------------
 
->>>>>>> Stashed changes
