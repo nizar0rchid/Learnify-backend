@@ -1,59 +1,50 @@
 var express = require('express');
 var router = express.Router();
-
-var admin = require("firebase-admin");
-
-var serviceAccount = require("../firebase.json");
+var bcrypt = require('bcryptjs');
+var jwt = require("jsonwebtoken");
 const User = require('../models/User');
 
-admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount),
-    databaseURL: "https://learnify-49d5a-default-rtdb.europe-west1.firebasedatabase.app"
-});
+const multer = require('multer');
+const path = require('path');
 
 
-const db = admin.firestore();
 
-
-/* GET users listing. */
-router.get('/', async(req, res, next) => {
-    try {
-        const users = await db.collection("users");
-        const data = await users.get();
-        const arr = [];
-        if (data.empty) {
-            res.status(400).json({ message: "No records found" });
-        } else {
-            data.forEach((item) => {
-                const users = new User(
-                    item.data().uid,
-                    item.data().email,
-                    item.data().password,
-                    item.data().username
-                );
-                arr.push(users);
-            });
-            res.status(200).json(arr);
-        }
-    } catch (error) {
-        res.status(400).json({ message: error.message });
+const storage = multer.diskStorage({
+    destination(req, file, cb) {
+        cb(null, './public/images/uploads')
+    },
+    filename(req, file, cb) {
+        cb(null, `${file.fieldname}_${Date.now()}${path.extname(file.originalname)}`)
     }
-});
-
-
-/*add user*/
-router.post('/', async(req, res, next) => {
-    try {
-        const data = {
-            username: req.body.username,
-            password: req.body.password,
-            email: req.body.email
-        };
-        await db.collection("users").doc(req.body.username).set(data);
-        res.status(201).json({ message: "Record saved successfully" });
-    } catch (error) {
-        res.status(400).json({ message: error.message });
+})
+const fileFilter = (req, file, cb) => {
+    if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/jpg') {
+        cb(null, true);
+    } else {
+        cb(null, false);
     }
-});
+}
+const upload = multer({
+    storage: storage,
+    fileFilter: fileFilter
+})
+
+
+
+var userController = require('../controllers/userController');
+router.route('/register')
+    .post(upload.single('profilePic'), userController.regitser);
+
+router.route('/login')
+    .post(userController.login)
+
+router.route('/pic/:user_id')
+    .put(upload.single('profilePic'), userController.pic);
+
+router.route('/:user_id')
+    .get(userController.view)
+    .patch(userController.update)
+    .delete(userController.delete);
+
 
 module.exports = router;
