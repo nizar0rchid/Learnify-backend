@@ -9,7 +9,7 @@ The api uri preceed all API endpoints and the following endpoints are currently 
 * **GET** /users/ (Get all users)
 -----------------------------
 * **POST**  /users/register
-* **GET**  /users/login
+* **POST**  /users/login
 -----------------------------
 * **GET** /users/:id  (find user by id)
 * **PUT** /users/pic/:id (Change Profile Picture)
