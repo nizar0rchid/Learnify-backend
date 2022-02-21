@@ -38,12 +38,12 @@ router.route('/register')
 router.route('/login')
     .post(userController.login)
 
-router.route('/pic/:user_id')
+router.route('/picture/:user_id')
     .put(upload.single('profilePic'), userController.pic);
 
 router.route('/:user_id')
     .get(userController.view)
-    .patch(userController.update)
+    .put(userController.update)
     .delete(userController.delete);
 
 
