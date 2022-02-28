@@ -35,6 +35,8 @@ const upload = multer({
 
 
 var userController = require('../controllers/userController');
+router.route('/')
+    .get(userController.index);
 router.route('/register')
     .post(upload.single('profilePic'), userController.regitser);
 
