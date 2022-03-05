@@ -106,7 +106,7 @@ exports.update = async(req, res) => {
         user.firstName = req.body.firstName ? req.body.firstName : user.firstName;
         user.lastName = req.body.lastName;
         user.email = req.body.email;
-        user.password = req.body.password;
+        //user.password = req.body.password;
         user.birthdate = req.body.birthdate;
         user.degree = req.body.degree;
         user.job = req.body.job;
