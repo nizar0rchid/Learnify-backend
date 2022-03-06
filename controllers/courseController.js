@@ -12,7 +12,15 @@ exports.new = async(req, res) => {
         const course = new Course();
         course.title = req.body.title;
         course.user = _id;
+        if (req.files) {
+            req.files.forEach(file => {
+                course.support.push(file.path);
+            });
+        }
+
+        await course.populate('user');
         await course.save();
+        console.log(course);
 
         const user = await User.findById(_id);
         user.courses.push(course._id);

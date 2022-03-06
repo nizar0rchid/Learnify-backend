@@ -136,9 +136,12 @@ exports.delete = function(req, res) {
 
 /*find by id*/
 exports.view = function(req, res) {
-    User.findById(req.params.user_id, function(err, user) {
-        if (err)
+    User.findById(req.params.user_id, async(err, user) => {
+        if (err) {
             res.send(err);
+        }
+
+        await user.populate('courses');
         res.status(201).json(user);
     });
 };
