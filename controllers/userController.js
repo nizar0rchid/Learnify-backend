@@ -4,7 +4,6 @@ const User = require('../models/User')
 const nodemailer = require('nodemailer')
 const jwt = require('jsonwebtoken')
 
-
 /* get all users*/
 exports.index = async(req, res, next) => {
     User.get(function(err, users) {
@@ -29,11 +28,12 @@ exports.index = async(req, res, next) => {
 exports.regitser = async(req, res, next) => {
     try {
         // Get user input
-        const { firstName, lastName, email, password, birthdate, degree, job } = req.body;
-        const profilePic = req.file.path
+        const { firstName, lastName, email, password, phone } = req.body;
+        let initials = firstName + '+' + lastName;
+        const profilePic = 'https://avatars.dicebear.com/api/initials/' + initials + '.png'
 
         // Validate user input
-        if (!(email && password && firstName && lastName && birthdate && degree && job)) {
+        if (!(email && password && firstName && lastName && phone)) {
             res.status(400).send("All input is required");
         }
 
@@ -45,6 +45,7 @@ exports.regitser = async(req, res, next) => {
             return res.status(409).send("User Already Exists. Please Login");
         }
 
+
         //Encrypt user password
         encryptedPassword = await bcrypt.hash(password, 10);
 
@@ -54,10 +55,8 @@ exports.regitser = async(req, res, next) => {
             lastName,
             email: email.toLowerCase(), // sanitize: convert email to lowercase
             password: encryptedPassword,
-            birthdate,
-            degree,
             profilePic,
-            job
+            phone
         });
 
         // Create token
@@ -106,6 +105,7 @@ exports.update = async(req, res) => {
         user.firstName = req.body.firstName ? req.body.firstName : user.firstName;
         user.lastName = req.body.lastName;
         user.email = req.body.email;
+        user.phone = req.body.phone;
         //user.password = req.body.password;
         user.birthdate = req.body.birthdate;
         user.degree = req.body.degree;

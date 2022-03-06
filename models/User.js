@@ -20,13 +20,14 @@ var userSchema = mongoose.Schema({
         type: String,
         required: true
     },
+    phone: {
+        type: String,
+    },
     birthdate: {
         type: Date,
-        required: true
     },
     degree: {
         type: String,
-        required: true
     },
     job: {
         type: String,
@@ -37,6 +38,9 @@ var userSchema = mongoose.Schema({
     token: {
         type: String
     },
+    courses: [
+        { type: mongoose.Schema.Types.ObjectId, ref: 'course' }
+    ]
 
 
 });
