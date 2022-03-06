@@ -6,6 +6,21 @@ var courseSchema = mongoose.Schema({
         type: String,
         required: true
     },
+    description: {
+        type: String
+    },
+    image: {
+        type: String
+    },
+    nbrSeance: {
+        type: Number
+    },
+    tag: {
+        type: String
+    },
+    price: {
+        type: Number
+    },
     support: [{
         type: String,
     }],

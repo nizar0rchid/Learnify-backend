@@ -11,6 +11,11 @@ exports.new = async(req, res) => {
         _id = req.params._id
         const course = new Course();
         course.title = req.body.title;
+        course.description = req.body.description;
+        course.nbrSeance = req.body.nbrSeance;
+        course.tag = req.body.tag;
+        course.price = req.body.price;
+
         course.user = _id;
         if (req.files) {
             req.files.forEach(file => {
@@ -26,7 +31,7 @@ exports.new = async(req, res) => {
         user.courses.push(course._id);
         await user.save();
 
-        //return new book object, after saving it to Publisher
+
         res.status(200).json(course)
 
     } catch (err) {
