@@ -574,8 +574,12 @@ exports.view = function(req, res) {
         if (err) {
             res.send(err);
         }
+        try {
+            await user.populate('courses');
+        } catch (error) {
+            console.log(error)
+        }
 
-        await user.populate('courses');
         res.status(201).json(user);
     });
 };
