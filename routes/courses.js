@@ -7,7 +7,7 @@ var multer = require('multer');
 
 const storage = multer.diskStorage({
     destination(req, file, cb) {
-        cb(null, './public/uploads/courses')
+        cb(null, './public/uploads/lessons')
     },
     filename(req, file, cb) {
         cb(null, file.originalname)
@@ -24,10 +24,10 @@ const upload = multer({
 
 
 var courseController = require('../controllers/courseController');
-/*router.route('/')
-    .get(userController.index);*/
+router.route('/')
+    .get(courseController.index);
 router.route('/new/:_id')
-    .post(upload.array('support'), courseController.new);
+    .post(upload.single('image'), courseController.new);
 /*
 router.route('/login')
     .post(userController.login)

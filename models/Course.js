@@ -21,13 +21,14 @@ var courseSchema = mongoose.Schema({
     price: {
         type: Number
     },
-    support: [{
-        type: String,
-    }],
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'user'
-    }
+    },
+    lessons: [
+        { type: mongoose.Schema.Types.ObjectId, ref: 'lesson' }
+    ]
+
 
 
 });

@@ -17,11 +17,12 @@ exports.new = async(req, res) => {
         course.price = req.body.price;
 
         course.user = _id;
-        if (req.files) {
+        course.image = req.file.path;
+        /*if (req.files) {
             req.files.forEach(file => {
                 course.support.push(file.path);
             });
-        }
+        }*/
 
         await course.populate('user');
         await course.save();
@@ -38,3 +39,16 @@ exports.new = async(req, res) => {
         res.status(400).json(err.message)
     }
 };
+
+/* get all courses*/
+exports.index = async(req, res, next) => {
+    Course.get(function(err, courses) {
+        if (err) {
+            res.json({
+                status: "error",
+                message: err,
+            });
+        }
+        res.json(courses);
+    });
+}

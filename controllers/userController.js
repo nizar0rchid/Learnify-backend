@@ -4,9 +4,6 @@ const User = require('../models/User')
 const nodemailer = require('nodemailer')
 const jwt = require('jsonwebtoken')
 
-
-
-
 const transporter = nodemailer.createTransport({
 
     service: 'gmail',
@@ -37,8 +34,6 @@ exports.index = async(req, res, next) => {
         });
     });
 }
-
-
 
 
 /*register*/
