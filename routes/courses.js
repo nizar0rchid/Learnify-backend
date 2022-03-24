@@ -28,6 +28,8 @@ router.route('/')
     .get(courseController.index);
 router.route('/new/:_id')
     .post(upload.single('image'), courseController.new);
+router.route('/lessons/:_id')
+    .get(courseController.view);
 /*
 router.route('/login')
     .post(userController.login)

@@ -25,13 +25,17 @@ var courseSchema = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'user'
     },
-    lessons: [
-        { type: mongoose.Schema.Types.ObjectId, ref: 'lesson' }
-    ]
+    lessons: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'lesson',
+        autopopulate: true
+    }]
 
 
 
 });
+courseSchema.plugin(require('mongoose-autopopulate'));
+
 // Export Contact model
 var Course = module.exports = mongoose.model('course', courseSchema);
 module.exports.get = function(callback, limit) {

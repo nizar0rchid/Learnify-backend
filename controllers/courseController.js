@@ -42,13 +42,37 @@ exports.new = async(req, res) => {
 
 /* get all courses*/
 exports.index = async(req, res, next) => {
-    Course.get(function(err, courses) {
+    Course.get(async(err, courses) => {
         if (err) {
             res.json({
                 status: "error",
                 message: err,
             });
         }
+        try {
+            await Course.find().populate('lessons');
+
+        } catch (error) {
+            console.log(error)
+        }
+
         res.json(courses);
     });
 }
+
+
+/*find by course lessons by course id*/
+exports.view = function(req, res) {
+    Course.findById(req.params._id, async(err, course) => {
+        if (err) {
+            res.send(err);
+        }
+        try {
+            await course.populate('lessons');
+        } catch (error) {
+            console.log(error)
+        }
+
+        res.status(200).json(course.lessons);
+    });
+};
