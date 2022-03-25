@@ -40,10 +40,16 @@ var userSchema = mongoose.Schema({
     },
     courses: [
         { type: mongoose.Schema.Types.ObjectId, ref: 'course' }
-    ]
+    ],
+    subbedCourses: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'course',
+        autopopulate: true
+    }]
 
 
 });
+userSchema.plugin(require('mongoose-autopopulate'));
 // Export Contact model
 var User = module.exports = mongoose.model('user', userSchema);
 module.exports.get = function(callback, limit) {

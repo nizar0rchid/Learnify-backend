@@ -23,7 +23,7 @@ var lessonController = require('../controllers/lessonController');
 /*router.route('/')
     .get(userController.index);*/
 router.route('/new/:_id')
-    .post(upload.array('support'), lessonController.new);
+    .post(upload.single('support'), lessonController.new);
 /*
 router.route('/login')
     .post(userController.login)

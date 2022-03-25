@@ -13,11 +13,7 @@ exports.new = async(req, res) => {
         lesson.title = req.body.title;
 
         lesson.course = _id;
-        if (req.files) {
-            req.files.forEach(file => {
-                lesson.support.push(file.path);
-            });
-        }
+        lesson.support = req.file.path;
 
         await lesson.populate('course');
         await lesson.save();
@@ -26,6 +22,7 @@ exports.new = async(req, res) => {
         const course = await Course.findById(_id);
         course.lessons.push(lesson._id);
         await course.save();
+        console.log(course);
 
 
         res.status(200).json(lesson)

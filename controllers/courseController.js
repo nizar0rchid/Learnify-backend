@@ -33,9 +33,10 @@ exports.new = async(req, res) => {
         await user.save();
 
 
-        res.status(200).json(course)
+        res.status(200).json(course._id)
 
     } catch (err) {
+        console.log(err.message)
         res.status(400).json(err.message)
     }
 };
@@ -61,7 +62,7 @@ exports.index = async(req, res, next) => {
 }
 
 
-/*find by course lessons by course id*/
+/*add course lessons by course id*/
 exports.view = function(req, res) {
     Course.findById(req.params._id, async(err, course) => {
         if (err) {

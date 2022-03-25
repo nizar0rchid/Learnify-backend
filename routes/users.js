@@ -44,5 +44,9 @@ router.route('/:user_id')
     .put(userController.update)
     .delete(userController.delete);
 
+router.route('/course/:user_id')
+    .post(userController.sub)
+
+
 
 module.exports = router;

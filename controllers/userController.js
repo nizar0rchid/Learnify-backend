@@ -1,6 +1,7 @@
 var bcrypt = require('bcryptjs');
 const AsyncHandler = require('express-async-handler')
 const User = require('../models/User')
+const Course = require('../models/Course')
 const nodemailer = require('nodemailer')
 const jwt = require('jsonwebtoken')
 
@@ -571,6 +572,8 @@ exports.view = function(req, res) {
         }
         try {
             await user.populate('courses');
+            await user.populate('subbedCourses');
+
         } catch (error) {
             console.log(error)
         }
@@ -617,4 +620,22 @@ exports.login = async(req, res) => {
         console.log(err);
     }
 
+};
+
+
+/* subscribe to course*/
+exports.sub = async(req, res) => {
+    User.findById(req.params.user_id, function(err, user) {
+        if (err)
+            res.send(err);
+
+        let courseid = req.body.courseid;
+        user.subbedCourses.push(courseid)
+
+        user.save(function(err) {
+            if (err)
+                res.json(err);
+            res.json(user);
+        });
+    });
 };

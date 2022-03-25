@@ -6,9 +6,9 @@ var lessonSchema = mongoose.Schema({
         type: String,
         required: true
     },
-    support: [{
+    support: {
         type: String,
-    }],
+    },
     course: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'course'
