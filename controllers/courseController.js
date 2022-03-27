@@ -77,3 +77,25 @@ exports.view = function(req, res) {
         res.status(200).json(course.lessons);
     });
 };
+
+//create a function that searches courses by title or tag
+exports.search = function(req, res) {
+    Course.find({
+        $or: [{
+            title: {
+                $regex: req.params.title,
+                $options: 'i'
+            }
+        }, {
+            tag: {
+                $regex: req.params.title,
+                $options: 'i'
+            }
+        }]
+    }, function(err, courses) {
+        if (err) {
+            res.send(err);
+        }
+        res.status(200).json(courses);
+    });
+}
