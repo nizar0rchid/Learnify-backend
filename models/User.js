@@ -38,9 +38,11 @@ var userSchema = mongoose.Schema({
     token: {
         type: String
     },
-    courses: [
-        { type: mongoose.Schema.Types.ObjectId, ref: 'course' }
-    ],
+    courses: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'course',
+        autopopulate: true
+    }],
     subbedCourses: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'course',

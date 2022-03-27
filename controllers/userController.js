@@ -639,3 +639,40 @@ exports.sub = async(req, res) => {
         });
     });
 };
+
+/* get created courses */
+exports.getCourses = function(req, res) {
+    User.findById(req.params.user_id, async(err, user) => {
+        if (err) {
+            res.send(err);
+        }
+        try {
+            await user.populate('courses');
+            await user.populate('subbedCourses');
+
+        } catch (error) {
+            console.log(error)
+        }
+
+        res.status(200).json(user.courses);
+    });
+};
+
+
+/* get created courses */
+exports.getSubbedCourses = function(req, res) {
+    User.findById(req.params.user_id, async(err, user) => {
+        if (err) {
+            res.send(err);
+        }
+        try {
+            await user.populate('courses');
+            await user.populate('subbedCourses');
+
+        } catch (error) {
+            console.log(error)
+        }
+
+        res.status(200).json(user.subbedCourses);
+    });
+};

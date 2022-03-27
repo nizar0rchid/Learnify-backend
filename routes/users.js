@@ -44,9 +44,12 @@ router.route('/:user_id')
     .put(userController.update)
     .delete(userController.delete);
 
-router.route('/course/:user_id')
+router.route('/courses/:user_id')
     .post(userController.sub)
+    .get(userController.getCourses);
 
+router.route('/subbedcourses/:user_id')
+    .get(userController.getSubbedCourses);
 
 
 module.exports = router;
