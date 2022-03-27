@@ -4,6 +4,7 @@ const User = require('../models/User')
 const Course = require('../models/Course')
 const nodemailer = require('nodemailer')
 const jwt = require('jsonwebtoken')
+const stripePayment = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 const transporter = nodemailer.createTransport({
 
@@ -630,15 +631,45 @@ exports.sub = async(req, res) => {
             res.send(err);
 
         let courseid = req.body.courseid;
-        user.subbedCourses.push(courseid)
 
-        user.save(function(err) {
+        Course.findById(courseid, function(err, course) {
             if (err)
-                res.json(err);
-            res.json(user);
+                res.send(err);
+            if (course.price === null || course.price === 0) {
+                user.subbedCourses.push(courseid);
+                user.save(function(err) {
+                    if (err)
+                        res.json(err);
+                    res.json(user);
+                });
+            } else {
+                async function pay() {
+                    const paymentIntent = await stripePayment.paymentIntents.create({
+                        amount: course.price,
+                        currency: "EUR",
+                    }, function(err, paymentIntent) {
+                        if (err) {
+                            res.json(err);
+                        } else {
+                            res.json({
+                                paymentIntent: paymentIntent.client_secret,
+                                paymentIntentData: paymentIntent,
+                                amount: course.price
+                            })
+                        }
+                    });
+
+                }
+                pay();
+                user.subbedCourses.push(courseid);
+                user.save(function(err) {});
+            }
+
         });
     });
 };
+
+
 
 /* get created courses */
 exports.getCourses = function(req, res) {
@@ -659,7 +690,7 @@ exports.getCourses = function(req, res) {
 };
 
 
-/* get created courses */
+/* get subbed courses */
 exports.getSubbedCourses = function(req, res) {
     User.findById(req.params.user_id, async(err, user) => {
         if (err) {
