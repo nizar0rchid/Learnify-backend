@@ -11,9 +11,16 @@ exports.new = async(req, res) => {
         _id = req.params._id
         const lesson = new Lesson();
         lesson.title = req.body.title;
+        lesson.meetCode = req.body.meetCode;
 
         lesson.course = _id;
-        lesson.support = req.file.path;
+        try {
+            lesson.support = req.file.path;
+        } catch (error) {
+            console.log(error)
+
+        }
+
 
         await lesson.populate('course');
         await lesson.save();

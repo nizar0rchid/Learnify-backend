@@ -12,6 +12,9 @@ var lessonSchema = mongoose.Schema({
     course: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'course'
+    },
+    meetCode: {
+        type: String,
     }
 
 
