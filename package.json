@@ -24,6 +24,7 @@
         "nodemailer": "^6.7.2",
         "nodemon": "^2.0.15",
         "request": "^2.88.2",
+        "square-connect": "^6.20201216.0",
         "stripe": "^8.212.0"
     }
 }

@@ -51,4 +51,6 @@ router.route('/courses/:user_id')
 router.route('/subbedcourses/:user_id')
     .get(userController.getSubbedCourses);
 
+
+
 module.exports = router;

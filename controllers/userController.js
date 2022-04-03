@@ -5,6 +5,10 @@ const Course = require('../models/Course')
 const nodemailer = require('nodemailer')
 const jwt = require('jsonwebtoken')
 const stripePayment = require('stripe')(process.env.STRIPE_SECRET_KEY);
+var SquareConnect = require('square-connect');
+var defaultClient = SquareConnect.ApiClient.instance;
+
+
 
 const transporter = nodemailer.createTransport({
 
@@ -634,31 +638,27 @@ exports.sub = async(req, res) => {
         let courseid = req.body.courseid;
 
         Course.findById(courseid, function(err, course) {
-            if (err)
-                res.send(err);
-            if (course.price === null || course.price === 0) {
-                user.subbedCourses.push(courseid);
-                user.save(function(err) {
-                    if (err)
-                        res.json(err);
-                    res.json(user);
-                });
-            } else {
+                // check if user is alr
                 async function pay() {
-                    const paymentIntent = await stripePayment.paymentIntents.create({
-                        amount: course.price,
-                        currency: "EUR",
-                    }, function(err, paymentIntent) {
-                        if (err) {
-                            res.json(err);
-                        } else {
-                            res.json({
-                                paymentIntent: paymentIntent.client_secret,
-                                paymentIntentData: paymentIntent,
-                                amount: course.price
-                            })
+                    var oauth2 = defaultClient.authentications['oauth2'];
+                    oauth2.accessToken = process.env.SQUARE_KEY;
+                    var transactionApi = new SquareConnect.TransactionsApi();
+                    transactionApi.charge("LMEECV9ERE3TJ", {
+                        idempotency_key: new Date(),
+                        card_nonce: req.query.nonce,
+                        acceptPartialAuthorization: true,
+                        amount_money: {
+                            amount: course.price,
+                            currency: "USD"
                         }
+                    }).then(function(data) {
+                        console.log('API called successfully. Returned data: ' + JSON.stringify(data));
+                        response.send(data);
+                    }, function(error) {
+                        console.error(JSON.parse(error.response.text).errors[0].detail);
+                        res.send(error);
                     });
+
 
                 }
                 pay();
@@ -666,9 +666,19 @@ exports.sub = async(req, res) => {
                 user.save(function(err) {});
             }
 
-        });
+            //}
+        );
     });
 };
+
+/* card test*/
+exports.card = async(req, res) => {
+
+
+};
+
+
+
 
 
 
