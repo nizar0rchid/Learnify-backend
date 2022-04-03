@@ -47,6 +47,7 @@ exports.regitser = async(req, res, next) => {
     try {
         // Get user input
         const { firstName, lastName, email, password, phone } = req.body;
+        console.log(firstName, lastName, email, password, phone);
         let initials = firstName + '+' + lastName;
         const profilePic = 'https://avatars.dicebear.com/api/initials/' + initials + '.png'
 
@@ -638,7 +639,7 @@ exports.sub = async(req, res) => {
         let courseid = req.body.courseid;
 
         Course.findById(courseid, function(err, course) {
-                // check if user is alr
+                //check 
                 async function pay() {
                     var oauth2 = defaultClient.authentications['oauth2'];
                     oauth2.accessToken = process.env.SQUARE_KEY;
