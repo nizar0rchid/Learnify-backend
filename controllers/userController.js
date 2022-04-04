@@ -639,42 +639,56 @@ exports.sub = async(req, res) => {
         let courseid = req.body.courseid;
 
         Course.findById(courseid, function(err, course) {
-                //check 
-                async function pay() {
-                    var oauth2 = defaultClient.authentications['oauth2'];
-                    oauth2.accessToken = process.env.SQUARE_KEY;
-                    var transactionApi = new SquareConnect.TransactionsApi();
-                    transactionApi.charge("LMEECV9ERE3TJ", {
-                        idempotency_key: new Date(),
-                        card_nonce: req.query.nonce,
-                        acceptPartialAuthorization: true,
-                        amount_money: {
-                            amount: course.price,
-                            currency: "USD"
-                        }
-                    }).then(function(data) {
-                        console.log('API called successfully. Returned data: ' + JSON.stringify(data));
-                        response.send(data);
-                    }, function(error) {
-                        console.error(JSON.parse(error.response.text).errors[0].detail);
-                        res.send(error);
-                    });
+
+            async function pay() {
+                var oauth2 = defaultClient.authentications['oauth2'];
+                oauth2.accessToken = process.env.SQUARE_KEY;
+                var transactionApi = new SquareConnect.TransactionsApi();
+                transactionApi.charge("LMEECV9ERE3TJ", {
+                    idempotency_key: new Date(),
+                    card_nonce: req.query.nonce,
+                    acceptPartialAuthorization: true,
+                    amount_money: {
+                        amount: course.price,
+                        currency: "USD"
+                    }
+                }).then(function(data) {
+                    console.log('API called successfully. Returned data: ' + JSON.stringify(data));
+                    response.send(data);
+                }, function(error) {
+                    console.error(JSON.parse(error.response.text).errors[0].detail);
+                    res.send(error);
+                });
 
 
-                }
-                pay();
-                user.subbedCourses.push(courseid);
-                user.save(function(err) {});
             }
+            pay();
+            user.subbedCourses.push(courseid);
+            user.save(function(err) {});
 
-            //}
-        );
+
+        });
     });
 };
 
+exports.checkSub = async(req, res) => {
+    User.findById(req.params.user_id, function(err, user) {
+        if (err)
+            res.send(err);
+        let courseid = req.body.courseid;
+        let isSubbed = false;
+        for (let i = 0; i < user.subbedCourses.length; i++) {
+            if (user.subbedCourses[i]._id == courseid) {
+                isSubbed = true;
+            }
+        }
+        res.status(200).json(isSubbed);
+    });
+};
+
+
 /* card test*/
 exports.card = async(req, res) => {
-
 
 };
 

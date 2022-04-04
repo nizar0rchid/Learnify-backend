@@ -50,6 +50,8 @@ router.route('/courses/:user_id')
 
 router.route('/subbedcourses/:user_id')
     .get(userController.getSubbedCourses);
+router.route('/checksub/:user_id')
+    .post(userController.checkSub);
 
 
 
