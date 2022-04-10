@@ -99,3 +99,16 @@ exports.search = function(req, res) {
         res.status(200).json(courses);
     });
 }
+
+//get courses by tag passed in the url
+exports.getByTag = function(req, res) {
+    Course.find({
+        tag: req.params.tag
+    }, function(err, courses) {
+        if (err) {
+            res.send(err);
+        }
+
+        res.status(200).json(courses);
+    });
+}

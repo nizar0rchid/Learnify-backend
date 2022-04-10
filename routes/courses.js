@@ -33,6 +33,8 @@ router.route('/lessons/:_id')
 
 router.route('/search/:title')
     .get(courseController.search);
+router.route('/tag/:tag')
+    .get(courseController.getByTag);
 /*
 router.route('/login')
     .post(userController.login)
