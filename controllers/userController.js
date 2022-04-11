@@ -2,6 +2,7 @@ var bcrypt = require('bcryptjs');
 const AsyncHandler = require('express-async-handler')
 const User = require('../models/User')
 const Course = require('../models/Course')
+const Notification = require('../models/Notification')
 const nodemailer = require('nodemailer')
 const jwt = require('jsonwebtoken')
 const stripePayment = require('stripe')(process.env.STRIPE_SECRET_KEY);
@@ -667,6 +668,20 @@ exports.sub = async(req, res) => {
             user.save(function(err) {});
 
 
+            User.findById(course.user, function(err, owner) {
+                //add notification to user
+                let notification = new Notification({
+                    user: user._id,
+
+                    date: new Date(),
+                    body: user.firstName + " " + user.lastName + " Has subscribed to " + course.title,
+                });
+                notification.save();
+                owner.notifications.push(notification);
+                owner.save(function(err) {});
+            });
+
+
         });
     });
 };
@@ -685,15 +700,6 @@ exports.checkSub = async(req, res) => {
         res.status(200).json(isSubbed);
     });
 };
-
-
-/* card test*/
-exports.card = async(req, res) => {
-
-};
-
-
-
 
 
 
@@ -833,5 +839,51 @@ exports.getWishlist = function(req, res) {
 
         res.status(200).json(user.wishlist);
         console.log(user.wishlist);
+    });
+}
+
+//get a user's notifications
+exports.getNotifications = function(req, res) {
+    User.findById(req.params.user_id, async(err, user) => {
+        if (err) {
+            res.send(err);
+        }
+        try {
+            await user.populate('notifications');
+
+        } catch (error) {
+            console.log(error)
+        }
+
+        res.status(200).json(user.notifications);
+    });
+}
+
+//delete a user's notification
+exports.deleteNotification = function(req, res) {
+    User.findById(req.params.user_id, async(err, user) => {
+        if (err) {
+            res.send(err);
+        }
+        try {
+            await user.populate('notifications');
+
+        } catch (error) {
+            console.log(error)
+        }
+
+        let notificationid = req.body.notificationid;
+
+        user.notifications.pull(notificationid);
+        user.save(function(err) {});
+
+        //delete the notification from the database
+        Notification.findByIdAndRemove(notificationid, function(err) {
+            if (err)
+                res.send(err);
+        });
+
+
+        res.status(200).json(user.notifications);
     });
 }

@@ -52,6 +52,11 @@ var userSchema = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'course',
         autopopulate: true
+    }],
+    notifications: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'notification',
+        autopopulate: true
     }]
 
 

@@ -59,6 +59,10 @@ router.route('/wish/:user_id')
 router.route('/wishremove/:user_id')
     .post(userController.deleteWish);
 
+router.route('/notifications/:user_id')
+    .get(userController.getNotifications)
+    .post(userController.deleteNotification);
+
 
 
 module.exports = router;
