@@ -53,6 +53,12 @@ router.route('/subbedcourses/:user_id')
 router.route('/checksub/:user_id')
     .post(userController.checkSub);
 
+router.route('/wish/:user_id')
+    .get(userController.getWishlist)
+    .post(userController.addWish);
+router.route('/wishremove/:user_id')
+    .post(userController.deleteWish);
+
 
 
 module.exports = router;

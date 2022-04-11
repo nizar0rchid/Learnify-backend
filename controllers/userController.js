@@ -733,3 +733,105 @@ exports.getSubbedCourses = function(req, res) {
         res.status(200).json(user.subbedCourses);
     });
 };
+
+//check if a user is the owner of a course
+exports.isOwner = function(req, res) {
+    User.findById(req.params.user_id, async(err, user) => {
+        if (err) {
+            res.send(err);
+        }
+        try {
+            await user.populate('courses');
+            await user.populate('subbedCourses');
+
+        } catch (error) {
+            console.log(error)
+        }
+
+        let courseid = req.body.courseid;
+        let isOwner = false;
+        for (let i = 0; i < user.courses.length; i++) {
+            if (user.courses[i]._id == courseid) {
+                isOwner = true;
+            }
+        }
+        res.status(200).json(isOwner);
+    });
+}
+
+//add a course to wishlist
+exports.addWish = function(req, res) {
+    User.findById(req.params.user_id, async(err, user) => {
+        if (err) {
+            res.send(err);
+        }
+        try {
+            await user.populate('courses');
+            await user.populate('subbedCourses');
+
+        } catch (error) {
+            console.log(error)
+        }
+
+        let courseid = req.body.courseid;
+        let isWish = false;
+        //check if the course is already adde to the wishlist
+        for (let i = 0; i < user.wishlist.length; i++) {
+            if (user.wishlist[i]._id == courseid) {
+                isWish = true;
+            }
+        }
+        if (!isWish) {
+            user.wishlist.push(courseid);
+            user.save(function(err) {});
+        }
+        res.status(200).json(user.wishlist);
+    });
+}
+
+//delete course from wishlist
+exports.deleteWish = function(req, res) {
+    User.findById(req.params.user_id, async(err, user) => {
+        if (err) {
+            res.send(err);
+        }
+        try {
+            await user.populate('courses');
+            await user.populate('subbedCourses');
+
+        } catch (error) {
+            console.log(error)
+        }
+
+        let courseid = req.body.courseid;
+        let isWish = false;
+        //check if the course is in the wishlist
+        for (let i = 0; i < user.wishlist.length; i++) {
+            if (user.wishlist[i]._id == courseid) {
+                isWish = true;
+            }
+        }
+        if (isWish) {
+            user.wishlist.pull(courseid);
+            user.save(function(err) {});
+        }
+        res.status(200).json(user.wishlist);
+    });
+}
+
+//get a user's populated wishlist
+exports.getWishlist = function(req, res) {
+    User.findById(req.params.user_id, async(err, user) => {
+        if (err) {
+            res.send(err);
+        }
+        try {
+
+        } catch (error) {
+            console.log(error)
+        }
+
+        res.status(200).json(user.wishlist);
+        console.log(user.wishlist);
+    });
+}
