@@ -35,17 +35,18 @@ router.route('/search/:title')
     .get(courseController.search);
 router.route('/tag/:tag')
     .get(courseController.getByTag);
-/*
-router.route('/login')
-    .post(userController.login)
-
-router.route('/picture/:user_id')
-    .put(upload.single('profilePic'), userController.pic);
-
-router.route('/:user_id')
+router.route('/:course_id')
     .get(userController.view)
-    .put(userController.update)
-    .delete(userController.delete);
-*/
+    /*
+    router.route('/login')
+        .post(userController.login)
+
+    router.route('/picture/:user_id')
+        .put(upload.single('profilePic'), userController.pic);
+
+
+        .put(userController.update)
+        .delete(userController.delete);
+    */
 
 module.exports = router;

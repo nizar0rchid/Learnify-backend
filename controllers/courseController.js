@@ -64,7 +64,7 @@ exports.index = async(req, res, next) => {
 
 /*add course lessons by course id*/
 exports.view = function(req, res) {
-    Course.findById(req.params._id, async(err, course) => {
+    Course.findById(req.params.course_id, async(err, course) => {
         if (err) {
             res.send(err);
         }
@@ -74,7 +74,7 @@ exports.view = function(req, res) {
             console.log(error)
         }
 
-        res.status(200).json(course.lessons);
+        res.status(200).json(course);
     });
 };
 
