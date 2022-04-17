@@ -13,6 +13,7 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var coursesRouter = require('./routes/courses');
 var lessonsRouter = require('./routes/lessons');
+var threadsRouter = require('./routes/threads');
 
 
 /////////////////////////////////////////
@@ -50,6 +51,7 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/courses', coursesRouter);
 app.use('/lessons', lessonsRouter);
+app.use('/threads', lessonsRouter);
 
 
 // catch 404 and forward to error handler
