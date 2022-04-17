@@ -62,7 +62,7 @@ exports.index = async(req, res, next) => {
 }
 
 
-/*add course lessons by course id*/
+
 exports.view = function(req, res) {
     Course.findById(req.params.course_id, async(err, course) => {
         if (err) {

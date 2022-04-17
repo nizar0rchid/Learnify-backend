@@ -36,7 +36,7 @@ router.route('/search/:title')
 router.route('/tag/:tag')
     .get(courseController.getByTag);
 router.route('/:course_id')
-    .get(userController.view)
+    .get(courseController.view)
     /*
     router.route('/login')
         .post(userController.login)
