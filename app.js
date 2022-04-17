@@ -9,11 +9,13 @@ let bodyParser = require('body-parser');
 var cors = require('cors');
 var app = express();
 app.use(cors());
+
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var coursesRouter = require('./routes/courses');
 var lessonsRouter = require('./routes/lessons');
 var threadsRouter = require('./routes/threads');
+var commentsRouter = require('./routes/comments');
 
 
 /////////////////////////////////////////
@@ -52,6 +54,7 @@ app.use('/users', usersRouter);
 app.use('/courses', coursesRouter);
 app.use('/lessons', lessonsRouter);
 app.use('/threads', threadsRouter);
+app.use('/comments', commentsRouter);
 
 
 // catch 404 and forward to error handler

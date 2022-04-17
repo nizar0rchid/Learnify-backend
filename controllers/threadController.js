@@ -1,7 +1,7 @@
 const AsyncHandler = require('express-async-handler')
 const User = require('../models/User')
 const Thread = require('../models/Thread')
-
+const Comment = require('../models/Comment')
 
 
 //get all threads
@@ -62,13 +62,15 @@ exports.delete = async(req, res) => {
     }
 }
 
-//find thread by id
+//find thread by id and populate the thread with its comments
 exports.findById = async(req, res) => {
     try {
-        const thread = await Thread.findById(req.params._id);
-        res.status(200).json(thread)
+        const thread = await Thread.findById(req.params._id).populate('comments');
+        res.json(thread);
     } catch (err) {
-        console.log(err.message)
-        res.status(400).json(err.message)
+        res.json({
+            status: "error",
+            message: err,
+        });
     }
 }
