@@ -33,9 +33,6 @@ exports.new = async(req, res) => {
 
         await thread.populate('user');
         await thread.save();
-        const user = await User.findById(_id);
-        user.threads.push(thread._id);
-        await user.save();
         res.status(201).json(thread)
     } catch (err) {
         console.log(err.message)
