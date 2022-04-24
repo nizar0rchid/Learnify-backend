@@ -50,13 +50,13 @@ app.post("/faceapi/:user_id", async(req, res) => {
         const { file } = req.files;
 
         const result = await faceApiService.detect(file.data, file.name);
-        let neutral = parseFloat(result["0"]["expressions"].neutral);
-        let happy = parseFloat(result["0"]["expressions"].happy);
-        let sad = parseFloat(result["0"]["expressions"].sad);
-        let surprise = parseFloat(result["0"]["expressions"].surprise);
-        let anger = parseFloat(result["0"]["expressions"].anger);
-        let fear = parseFloat(result["0"]["expressions"].fear);
-        let disgust = parseFloat(result["0"]["expressions"].disgust);
+        let neutral = parseFloat(result["0"]["expressions"]["neutral"]);
+        let happy = parseFloat(result["0"]["expressions"]["happy"]);
+        let sad = parseFloat(result["0"]["expressions"]["sad"]);
+        let surprise = parseFloat(result["0"]["expressions"]["surprised"]);
+        let anger = parseFloat(result["0"]["expressions"]["angry"]);
+        let fear = parseFloat(result["0"]["expressions"]["fearful"]);
+        let disgust = parseFloat(result["0"]["expressions"]["disgusted"]);
 
         let results = []
         results.push(neutral, happy, sad, surprise, anger, fear, disgust);
