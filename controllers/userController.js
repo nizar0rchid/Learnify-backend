@@ -518,7 +518,7 @@ exports.pic = async(req, res) => {
     User.findById(req.params.user_id, function(err, user) {
         if (err)
             res.send(err);
-        //console.log(req.file);
+        console.log(req.file);
         user.profilePic = req.file.path
             // save the contact and check for errors
         user.save(function(err) {

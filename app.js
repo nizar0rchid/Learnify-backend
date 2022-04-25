@@ -39,11 +39,11 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(bodyParser.json());
 
-app.use(fileUpload());
+//app.use(fileUpload())
 
 
 // post request to check user face expressions after sending a photo
-app.post("/faceapi/:user_id", async(req, res) => {
+app.post("/faceapi/:user_id", fileUpload(), async(req, res) => {;
     try {
 
 

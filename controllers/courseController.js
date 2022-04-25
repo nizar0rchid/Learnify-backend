@@ -15,9 +15,12 @@ exports.new = async(req, res) => {
         course.nbrSeance = req.body.nbrSeance;
         course.tag = req.body.tag;
         course.price = req.body.price;
-
+        console.log("test")
+        console.log(req.file)
         course.user = _id;
         course.image = req.file.path;
+
+
         /*if (req.files) {
             req.files.forEach(file => {
                 course.support.push(file.path);
