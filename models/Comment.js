@@ -15,7 +15,7 @@ var commentSchema = mongoose.Schema({
     },
     thread: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'user',
+        ref: 'thread',
         autopopulate: true
     },
 
