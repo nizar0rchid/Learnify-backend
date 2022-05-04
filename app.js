@@ -10,6 +10,7 @@ var logger = require('morgan');
 let mongoose = require('mongoose');
 let bodyParser = require('body-parser');
 var cors = require('cors');
+
 var app = express();
 app.use(cors());
 
@@ -21,7 +22,11 @@ var threadsRouter = require('./routes/threads');
 var commentsRouter = require('./routes/comments');
 
 
+//playground
 /////////////////////////////////////////
+
+
+
 
 
 ////////////////////////////
@@ -40,6 +45,7 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 
 //app.use(fileUpload())
+
 
 
 // post request to check user face expressions after sending a photo
@@ -136,6 +142,17 @@ app.use('/courses', coursesRouter);
 app.use('/lessons', lessonsRouter);
 app.use('/threads', threadsRouter);
 app.use('/comments', commentsRouter);
+
+const pid = process.pid;
+
+//app.get index page
+app.get('/heavy', (req, res) => {
+    for (let i = 0; i < 1e7; i++); {
+        console.log(`Handled by process ${pid}`);
+        res.send(`Handled by process ${pid}`);
+    } // simulate CPU work
+
+});
 
 
 // catch 404 and forward to error handler
